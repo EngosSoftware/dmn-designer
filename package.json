@@ -1,0 +1,32 @@
+{
+  "name": "dnm-designer",
+  "version": "0.0.1",
+  "description": "Web designer of decision diagrams conformant with DMN",
+  "private": true,
+  "scripts": {
+    "test": "./preprocess.sh && echo \"Error: no test specified\" && exit 1",
+    "watch": "./preprocess.sh && webpack --watch",
+    "start": "./preprocess.sh && webpack-dev-server --open --config webpack.dev.js",
+    "build": "./preprocess.sh && webpack --config webpack.prod.js"
+  },
+  "keywords": [],
+  "author": "Mateusz Marchewka, Dariusz Depta",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/uuid-js": "^0.7.2",
+    "copy-webpack-plugin": "^6.0.3",
+    "css-loader": "^4.2.1",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.1.0",
+    "material-design-icons": "^3.0.1",
+    "simpa": "^0.0.68",
+    "style-loader": "^1.2.1",
+    "ts-loader": "^8.0.2",
+    "typescript": "^3.9.7",
+    "uuid-js": "^0.7.5",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.1.1"
+  }
+}

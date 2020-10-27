@@ -1,0 +1,37 @@
+.drg-bottom {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 20px;
+    white-space: nowrap;
+    color: var(--primary-color);
+    background-color: var(--primary-background-color);
+}
+
+.drg-bottom-regulations {
+    text-align: center;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.drg-bottom-privacy-policy {
+    text-align: center;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+@media all and (min-width: 1001px) {
+}
+
+@media all and (min-width: 701px) and (max-width: 1000px) {
+}
+
+@media all and (min-width: 501px) and (max-width: 700px) {
+}
+
+@media all and (max-width: 500px) {
+    .drg-bottom {
+        font-size: 20px;
+    }
+}

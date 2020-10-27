@@ -1,0 +1,17 @@
+/* Styling for the application container. */
+.drg-app {
+    background-color: var(--primary-background-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.drg-header-container {
+}
+
+.drg-view-container {
+    flex-grow: 1;
+}
+
+.drg-footer-container {
+}

@@ -1,0 +1,8 @@
+/dist
+/tmp
+/out-tsc
+/deployment/app
+/node_modules
+
+/.idea
+

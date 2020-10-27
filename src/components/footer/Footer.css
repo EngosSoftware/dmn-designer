@@ -1,0 +1,33 @@
+.drg-footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    font-size: 20px;
+    padding: 4px 0;
+    color: var(--primary-color);
+    background-color: var(--primary-background-color);
+}
+
+.slo-footer-copyright {
+    text-align: center;
+}
+
+@media all and (min-width: 1001px) {
+
+}
+
+@media all and (max-width: 1000px) and (min-width: 701px) {
+
+}
+
+@media all and (max-width: 700px) and (min-width: 501px) {
+
+}
+
+@media all and (max-width: 500px) {
+    .slo-footer {
+        font-size: 18px;
+    }
+}
+
