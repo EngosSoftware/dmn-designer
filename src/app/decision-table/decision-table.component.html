@@ -1,0 +1,196 @@
+<div [ngClass]="{ 'container': !fullscreen, 'fullscreen': fullscreen }">
+  <div class="row">
+    <div [ngClass]="{ 'col-7': helpVisible, 'col-12': !helpVisible }">
+      <mat-form-field *ngIf="editable" class="title--editable">
+        <label>
+          <input matInput placeholder="Table name" [(ngModel)]="tableName" autocomplete="off">
+        </label>
+      </mat-form-field>
+      <h5 *ngIf="!editable" class="title">
+        {{ tableName + ' ' }}
+      </h5>
+      <span *ngIf="!editable && schemaId">
+        {{ '(saved, schema ID: ' + schemaId + ')' }}
+      </span>
+      <mat-table [dataSource]="conditionDataSource">
+        <ng-container *ngFor="let column of conditionColumnsData.columns" [cdkColumnDef]="column.columnDef">
+          <mat-header-cell *cdkHeaderCellDef>
+            <div *ngIf="column.header === 'Condition \\ Rules'">
+              <mat-form-field class="hit-policy" *ngIf="editable">
+                <mat-select placeholder="Hit policy" [(value)]="selectedHitPolicy">
+                  <mat-option *ngFor="let policy of hitPolicies" [value]="policy.key">
+                    {{ policy.value }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="!editable">
+                {{ 'Hit policy: ' + getSelectedHitPolicyName() }}
+              </div>
+            </div>
+            <div *ngIf="column.header !== 'Condition \\ Rules'">
+              {{ column.header }}
+              <mat-icon *ngIf="editable && column.header !== 'No.' && column.header !== 'Allowed values'"
+                        class="delete-button"
+                        (click)="deleteColumn(column)">
+                delete
+              </mat-icon>
+            </div>
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let row"
+                    [ngClass]="{'cell-name-input': column.columnDef === 'name' && row.type === 'Input',
+                                'cell-name-optional': column.columnDef === 'name' && row.type === 'Optional',
+                                'cell-name-output': column.columnDef === 'name' && row.type === 'Output'}">
+            <mat-form-field *ngIf="editable && column.header !== 'No.'">
+              <label>
+                <input matInput
+                       [value]="column.cell(row)"
+                       (change)="updateSchemaCell(column, row, $event)"
+                       autocomplete="off">
+              </label>
+            </mat-form-field>
+            <div *ngIf="!editable || column.header === 'No.'">
+              {{ column.cell(row) }}
+            </div>
+            <mat-icon *ngIf="editable && column.header === 'No.'"
+                      class="delete-button"
+                      (click)="deleteRow(row)">
+              delete
+            </mat-icon>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="conditionColumnsData.getDisplayedColumns()"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: conditionColumnsData.getDisplayedColumns();"></mat-row>
+      </mat-table>
+
+      <div *ngIf="editable" class="add-rule-button-container" (click)="addRule()">
+        <button mat-button>
+          <mat-icon>add</mat-icon>
+          Add Rule
+        </button>
+      </div>
+
+      <div *ngIf="editable" class="add-button-container" (click)="addCondition()">
+        <button mat-button>
+          <mat-icon>add</mat-icon>
+          Add Condition
+        </button>
+      </div>
+      <mat-radio-group *ngIf="editable" class="row-type__container" [(ngModel)]="rowType">
+        <mat-radio-button *ngFor="let type of rowTypes" class="row-type" [value]="type">
+          {{ type }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <div class="insert-button-container"
+           *ngIf="insertButtonVisible && schemaId"
+           (click)="buildValueTable()"
+           [ngClass]="{'bounceOut': bounceOutButton}">
+        <button mat-raised-button>Insert values</button>
+      </div>
+      <div class="arrow-separator__container" *ngIf="!insertButtonVisible && valuesPresent">
+        <mat-icon class="arrow-separator">arrow_downward</mat-icon>
+      </div>
+
+      <mat-table [dataSource]="valuesDataSource" *ngIf="valuesPresent">
+        <ng-container *ngFor="let column of conditionColumnsData.columns" [cdkColumnDef]="column.columnDef">
+          <mat-header-cell *cdkHeaderCellDef>
+            {{ column.header }}
+            <mat-icon *ngIf="editable && column.header !== 'No.' && column.header !== 'Allowed values'"
+                      class="delete-button"
+                      (click)="deleteColumn(column)">
+              delete
+            </mat-icon>
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let row"
+                    [ngClass]="{'cell-name-input': column.columnDef === 'name' && row.type === 'Input',
+                                'cell-name-optional': column.columnDef === 'name' && row.type === 'Optional',
+                                'cell-name-output': column.columnDef === 'name' && row.type === 'Output'}">
+            <mat-form-field *ngIf="column.header !== 'No.'">
+              <label>
+                <input matInput
+                       [value]="column.cell(row)"
+                       (change)="updateValueCell(column, row, $event)"
+                       autocomplete="off">
+              </label>
+            </mat-form-field>
+            <div *ngIf="column.header === 'No.'">
+              {{ column.cell(row) }}
+              <mat-icon class="delete-button" (click)="deleteRow(row)">
+                delete
+              </mat-icon>
+            </div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="conditionColumnsData.getDisplayedColumns()"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: conditionColumnsData.getDisplayedColumns();"></mat-row>
+      </mat-table>
+
+      <div class="output-button-container"
+           *ngIf="outputsButtonVisible"
+           (click)="getOutputs()"
+           [ngClass]="{'bounceOut': bounceOutButton}">
+        <button mat-raised-button color="primary">Calculate outputs</button>
+      </div>
+      <div class="arrow-separator__container" *ngIf="!outputsButtonVisible && outputsPresent">
+        <mat-icon class="arrow-separator">arrow_downward</mat-icon>
+      </div>
+
+      <!--TODO move table to another component (code 3 times repeated)-->
+      <mat-table [dataSource]="outputsDataSource" *ngIf="outputsPresent">
+        <ng-container *ngFor="let column of conditionColumnsData.columns" [cdkColumnDef]="column.columnDef">
+          <mat-header-cell *cdkHeaderCellDef>
+            <div *ngIf="column.header === 'Actions \\ Rules'">
+              {{ 'Hit policy: ' + getSelectedHitPolicyName() }}
+            </div>
+            <div *ngIf="column.header !== 'Actions \\ Rules'">
+              {{ column.header }}
+            </div>
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let row"
+                    [ngClass]="{'cell-name-input': column.columnDef === 'name' && row.type === 'Input',
+                                'cell-name-optional': column.columnDef === 'name' && row.type === 'Optional',
+                                'cell-name-output': column.columnDef === 'name' && row.type === 'Output'}">
+            {{ column.cell(row) }}
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="conditionColumnsData.getDisplayedColumns()"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: conditionColumnsData.getDisplayedColumns();"></mat-row>
+      </mat-table>
+    </div>
+
+    <!--TODO add tutorial-->
+    <div class="col-5" *ngIf="helpVisible">
+      <div class="help">
+        <mat-icon class="help__close" (click)="closeHelp()">close</mat-icon>
+        <div class="help__title">
+          <h3>Getting started</h3>
+        </div>
+        <div class="help__body">
+          <ol>
+            <li>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non turpis egestas,
+              interdum leo nec, tristique erat. Pellentesque habitant morbi tristique senectus et
+              netus et malesuada fames ac turpis egestas.
+            </li>
+            <li>
+              Etiam ullamcorper tincidunt urna, ut consectetur lectus mollis sit amet. Suspendisse
+              et orci ante. Quisque elementum commodo magna.
+            </li>
+            <li>
+              Quisque mauris massa, venenatis sit amet odio id, viverra laoreet ipsum. Suspendisse sed
+              orci sed enim pharetra rutrum.
+            </li>
+            <li>
+              Mauris posuere sagittis facilisis. Proin ornare ac ipsum vel sodales. Suspendisse augue justo,
+              porttitor eget tristique ac, mattis non dolor.
+            </li>
+            <li>
+              Nullam eleifend, diam sed luctus rhoncus, felis nunc feugiat tortor, eget sollicitudin nibh augue a dui.
+              Integer sollicitudin iaculis lectus vehicula sollicitudin.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

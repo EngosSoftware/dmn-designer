@@ -1,0 +1,32 @@
+<mat-toolbar class="dt-navbar">
+  <img src="/assets/images/logo.png" height="50px" (click)="refresh()" class="logo" alt="Decision Tables">
+
+  <button mat-button (click)="editTable()" class="edit-button">
+    <span *ngIf="!editable">
+      <mat-icon>edit</mat-icon>
+      Edit table
+    </span>
+    <span *ngIf="editable">
+      <mat-icon>save</mat-icon>
+      Save
+    </span>
+  </button>
+
+  <button mat-button (click)="showHelp()">
+    <mat-icon>help</mat-icon>
+    Show help
+  </button>
+
+  <button mat-button (click)="turnFullScreen()">
+    <span *ngIf="!fullscreen">
+      <mat-icon>fullscreen</mat-icon>
+      Enable Fullscreen
+    </span>
+    <span *ngIf="fullscreen">
+      <mat-icon>fullscreen</mat-icon>
+      Disable Fullscreen
+    </span>
+  </button>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

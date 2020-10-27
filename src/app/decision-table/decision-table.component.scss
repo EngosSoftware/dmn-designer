@@ -1,0 +1,180 @@
+table {
+  width: 100%;
+}
+
+.container {
+  padding: 15px;
+}
+
+.help {
+  width: 100%;
+  color: #666666;
+  padding: 20px;
+
+  &:hover {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 19px;
+    box-shadow: 3px 3px 3px grey;
+
+    & .mat-icon {
+      color: #666666;
+
+      &:hover {
+        color: darkorange;
+      }
+    }
+  }
+
+  & .mat-icon {
+    color: #ffffff;
+  }
+
+  &__close {
+    float: right;
+    cursor: pointer;
+  }
+
+  &__title {
+    width: 100%;
+    text-align: center;
+  }
+
+  &__body {
+    margin-top: 15px;
+    text-align: justify;
+  }
+}
+
+.mat-column-name {
+  min-width: 140px;
+  padding-left: 5px;
+
+  & .mat-form-field {
+    width: 95%;
+    padding-left: 5px;
+  }
+
+  & .hit-policy {
+    width: 110px;
+    padding-left: 5px;
+  }
+}
+
+.mat-column-allowed {
+  min-width: 130px;
+  border-left: double rgba(0,0,0,.54);;
+  padding-left: 5px;
+}
+
+.col-12 .mat-column-name {
+  min-width: 250px;
+}
+
+.col-12 .mat-column-position {
+  max-width: 75px;
+}
+
+.arrow-separator {
+  margin: 15px auto;
+  font-size: 40px;
+
+  &__container {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.add-button-container {
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.add-rule-button-container {
+  margin-top: 5px;
+  float: right;
+}
+
+.insert-button-container {
+  width: 100%;
+  text-align: center;
+  margin: 15px;
+}
+
+@keyframes bounceOut {
+  20% { transform: scale3d(0.9, 0.9, 0.9); }
+  50%,
+  55% { opacity: 1; transform: scale3d(1.1, 1.1, 1.1); }
+  to { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
+}
+
+.bounceOut {
+  animation-duration: 0.75s;
+  animation-name: bounceOut;
+}
+
+button {
+  outline: none;
+}
+
+mat-form-field {
+  width: 80%;
+}
+
+.delete-button {
+  vertical-align: -4px;
+  margin-top: 5px;
+  font-size: 17px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.mat-header-cell:hover .delete-button {
+  color: rgba(0,0,0,.54);
+}
+
+.mat-cell:hover .delete-button {
+  color: rgba(0,0,0,.54);
+}
+
+.fullscreen {
+  width: 100%;
+  padding: 15px;
+}
+
+.title {
+  margin-top: 15px;
+
+  &--editable {
+    @extend .title;
+    width: 200px;
+  }
+}
+
+.cell-name-input {
+  background-color: #E3F2FD;
+}
+
+.cell-name-optional {
+  background-color: #F1F8E9;
+}
+
+.cell-name-output {
+  background-color: #FFEBEE;
+}
+
+.row-type {
+  margin-right: 15px;
+
+  &__container {
+    vertical-align: -4px;
+    font-size: 0.95rem;
+    margin-left: 5px;
+  }
+}
+
+.output-button-container {
+  width: 100%;
+  text-align: center;
+  margin: 30px;
+}
